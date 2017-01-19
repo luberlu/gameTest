@@ -104,6 +104,18 @@
             return true;
         },
 
+        actionMove: function (mouse) {
+
+            if(mouse.offsetX > personnage.CalcPositionLeft) personnage.run('right');
+            else personnage.run('left');
+
+            if(mouse.offsetY > personnage.CalcPositionTop) personnage.run('down');
+            else personnage.run('up');
+
+            setTimeout(personnage.stop(), 200);
+
+        },
+
         listener: function () {
         }
     };
@@ -253,62 +265,11 @@
         pageY: 0
     };
 
-    var deplacementActions = function () {
-
-        if(mouse.offsetX > personnage.CalcPositionLeft) {
-            touches.datas.toucheStatus.left = false;
-            touches.datas.toucheStatus.right = true;
-        } else{
-            touches.datas.toucheStatus.left = true;
-            touches.datas.toucheStatus.right = false;
-        }
-
-        if(mouse.offsetY > personnage.CalcPositionTop){
-            touches.datas.toucheStatus.up = false;
-            touches.datas.toucheStatus.down = true;
-        } else {
-            touches.datas.toucheStatus.up = true;
-            touches.datas.toucheStatus.down = false;
-        }
-    };
-
-    deplacement = function () {
+    document.addEventListener("mousemove", function (e) {
         mouse.offsetX = e.offsetX;
         mouse.offsetY = e.offsetY;
-        deplacementActions();
-    };
-
-    deplacementOut = function (){
-
-        touches.datas.toucheStatus = {
-            left: false,
-            right: false,
-            up: false,
-            down: false,
-            jump: false
-        }
-
-    };
-
-    document.addEventListener("mousemove", function (e) {
-
-        deplacement = function () {
-            mouse.offsetX = e.offsetX;
-            mouse.offsetY = e.offsetY;
-            deplacementActions();
-        };
-
-        deplacement();
-
-        mouseMoveOut = setTimeout(deplacementOut, 300);
-
-        console.log("offset X : " + e.offsetX);
-        console.log("offset Y : " + e.offsetY);
-        console.log("personnage top : " + personnage.CalcPositionTop);
-        console.log("personnage left: " + personnage.CalcPositionLeft);
-
+        DOM.actionMove(mouse);
     });
-
 
     document.addEventListener('keydown', function (e) {
 
