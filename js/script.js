@@ -38,12 +38,12 @@
                         this.objects.personnage.style.left = personnage.positionLeft + "px";
                         break;
                     case "up":
-                        //this.objects.personnage.class = "on left";
+                        this.objects.personnage.class = "on up";
                         console.log("up class");
                         this.objects.personnage.style.top = personnage.positionTop + "px";
                         break;
                     case "down":
-                        //this.objects.personnage.class = "on right";
+                        this.objects.personnage.class = "on down";
                         this.objects.personnage.style.top = personnage.positionTop + "px";
                         break;
                     case "stop":
