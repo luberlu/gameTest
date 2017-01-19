@@ -29,14 +29,17 @@
                 switch (action) {
                     case "left":
                         this.objects.personnage.class = "on left";
+                        console.log("left class");
                         this.objects.personnage.style.left = personnage.positionLeft + "px";
                         break;
                     case "right":
                         this.objects.personnage.class = "on right";
+                        console.log("right class");
                         this.objects.personnage.style.left = personnage.positionLeft + "px";
                         break;
                     case "up":
                         this.objects.personnage.class = "on up";
+                        console.log("up class");
                         this.objects.personnage.style.top = personnage.positionTop + "px";
                         break;
                     case "down":
@@ -66,7 +69,8 @@
 
                 switch (key) {
                     case "class":
-                        document.getElementById(id).className = obj[key];
+                        if(document.getElementById(id).className != obj[key])
+                            document.getElementById(id).className = obj[key];
                         break;
                     case "style":
                         for (var styleObj in obj[key]) {
@@ -106,11 +110,14 @@
 
         actionMove: function (mouse) {
 
-            if(mouse.offsetX > personnage.CalcPositionLeft) personnage.run('right');
-            else personnage.run('left');
+            setTimeout(function() {
 
-            if(mouse.offsetY > personnage.CalcPositionTop) personnage.run('down');
-            else personnage.run('up');
+                if (mouse.offsetX > personnage.CalcPositionLeft) personnage.run('right');
+                else personnage.run('left');
+
+                if (mouse.offsetY > personnage.CalcPositionTop) personnage.run('down');
+                else personnage.run('up');
+            },40);
 
             setTimeout(personnage.stop(), 200);
 
