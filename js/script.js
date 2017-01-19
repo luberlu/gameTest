@@ -246,21 +246,21 @@
     };
 
     var mouse = {
-        x: 0,
-        y: 0,
-        lastx: 0,
-        lasty: 0
+        offsetX: 0,
+        offsetY: 0,
+        pageX: 0,
+        pageY: 0
     };
 
-    var deplacement = function() {
+    var deplacementActions = function() {
 
-        if (mouse.x > mouse.lastx) {
+        if (mouse.offsetX > mouse.lastx) {
             personnage.run("right");
         } else {
             personnage.run("left");
         }
 
-        if (mouse.y > mouse.lastx) {
+        if (mouse.offsetY > mouse.lastx) {
             personnage.run("down");
         } else {
             personnage.run("up");
@@ -268,12 +268,18 @@
     };
 
     document.addEventListener("mousemove", function (e){
-        mouse.lastx = mouse.x;
-        mouse.lasty = mouse.y;
-        mouse.x = e.screenX;
-        mouse.y = e.screenY;
 
-        //deplacement();
+        deplacement = function(){
+            mouse.pageX = e.pageX;
+            mouse.pageY = e.pageY;
+            //deplacementActions();
+        };
+
+        console.log("offset X : " + e.offsetX);
+        console.log("offset Y : " + e.offsetY);
+
+        var deplacementTime = setTimeout(deplacement, 1000);
+        clearTimeout(deplacementTime);
 
     });
 
