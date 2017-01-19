@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     var contentDiv = document.querySelector("#nav");
     var height = contentDiv.clientHeight;
@@ -9,6 +9,7 @@
     var heightSection = sections.item(0).clientHeight;
     var sprite = document.getElementById("sprite");
     var item = document.querySelector(".item");
+    var mouseMove;
 
 
     var DOM = {
@@ -22,9 +23,9 @@
                 }
             }
         },
-        changeObject: function(object, action){
+        changeObject: function (object, action) {
 
-            if(object == "personnage") {
+            if (object == "personnage") {
                 switch (action) {
                     case "left":
                         this.objects.personnage.class = "on left";
@@ -56,14 +57,14 @@
 
         },
 
-        changeDOM: function(obj){
+        changeDOM: function (obj) {
 
             var id = obj.id;
 
             for (var key in obj) {
                 if (!obj.hasOwnProperty(key)) continue;
 
-                switch(key) {
+                switch (key) {
                     case "class":
                         document.getElementById(id).className = obj[key];
                         break;
@@ -79,19 +80,19 @@
 
         },
 
-        touchMethod: function(what1){
+        touchMethod: function (what1) {
 
             var w = window,
                 d = document,
                 e = d.documentElement,
                 g = d.getElementsByTagName('body')[0],
                 x = w.innerWidth || e.clientWidth || g.clientWidth,
-                y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+                y = w.innerHeight || e.clientHeight || g.clientHeight;
 
             var left = what1.CalcPositionLeft;
             var top = what1.CalcPositionTop;
 
-            if((left < 0 || (left + 55)> x) || (top < 0 || (top + 57) > y)){
+            if ((left < 0 || (left + 55) > x) || (top < 0 || (top + 57) > y)) {
                 return true;
             } else {
                 return false;
@@ -99,11 +100,11 @@
 
         },
 
-        colisionMethod: function(what, where){
+        colisionMethod: function (what, where) {
             return true;
         },
 
-        listener: function() {
+        listener: function () {
         }
     };
 
@@ -118,51 +119,51 @@
         CalcPositionTop: 0,
         CalcPositionLeft: 0,
 
-        init: function(){
+        init: function () {
             DOM.changeObject("personnage", "up");
             DOM.changeObject("personnage", "left");
         },
 
-        calcInit: function(){
+        calcInit: function () {
             this.CalcPositionTop = 0;
             this.CalcPositionLeft = 0;
         },
 
-        speed: function(){
+        speed: function () {
             this.vitesse += 4;
         },
 
-        timer: function(){
+        timer: function () {
             window.setInterval(this.speed(), 700);
         },
 
-        run: function(direction){
+        run: function (direction) {
 
-            switch (direction){
+            switch (direction) {
                 case "up":
                     this.CalcPositionTop = this.positionTop - this.vitesse;
-                    if(!DOM.touchMethod(this)) {
+                    if (!DOM.touchMethod(this)) {
                         this.positionTop -= this.vitesse;
                         DOM.changeObject("personnage", "up");
                     } else this.calcInit();
                     break;
                 case "down":
                     this.CalcPositionTop = this.positionTop + this.vitesse;
-                    if(!DOM.touchMethod(this)) {
+                    if (!DOM.touchMethod(this)) {
                         this.positionTop += this.vitesse;
                         DOM.changeObject("personnage", "down");
                     } else this.calcInit();
                     break;
                 case "left":
                     this.CalcPositionLeft = this.positionLeft - this.vitesse;
-                    if(!DOM.touchMethod(this)) {
+                    if (!DOM.touchMethod(this)) {
                         this.positionLeft -= this.vitesse;
                         DOM.changeObject("personnage", "left");
                     } else this.calcInit();
                     break;
                 case "right":
                     this.CalcPositionLeft = this.positionLeft + this.vitesse;
-                    if(!DOM.touchMethod(this)) {
+                    if (!DOM.touchMethod(this)) {
                         this.positionLeft += this.vitesse;
                         DOM.changeObject("personnage", "right");
                     } else this.calcInit();
@@ -173,12 +174,12 @@
 
         },
 
-        stop: function(){
+        stop: function () {
             DOM.changeObject("personnage", "stop");
             this.vitesse = 20;
         },
 
-        jump: function(){
+        jump: function () {
             this.jumpCounter++;
             touches.datas.toucheStatus.jump = false;
             this.positionTop -= 50;
@@ -186,14 +187,14 @@
             DOM.changeObject("personnage", "jump");
 
             var that = this;
-            setTimeout(function(){
+            setTimeout(function () {
                 that.positionTop += 50;
                 DOM.changeObject("personnage", "jump");
             }, 200);
 
         },
-        touchObject: function(){
-            this.energie =+ 1;
+        touchObject: function () {
+            this.energie = +1;
         }
 
     };
@@ -218,19 +219,19 @@
             }
         },
 
-        keyActions : function(){
+        keyActions: function () {
 
             var array = [];
 
-            for(var key in this.datas.toucheStatus){
+            for (var key in this.datas.toucheStatus) {
                 if (!this.datas.toucheStatus.hasOwnProperty(key)) continue;
 
-                if(key == "left" || key == "up" || key == "right" || key == "down") {
-                    if(this.datas.toucheStatus[key]) personnage.run(key);
+                if (key == "left" || key == "up" || key == "right" || key == "down") {
+                    if (this.datas.toucheStatus[key]) personnage.run(key);
                     array.push(this.datas.toucheStatus[key]);
                 }
-                else if(key == "jump"){
-                    if(this.datas.toucheStatus[key]) personnage.jump();
+                else if (key == "jump") {
+                    if (this.datas.toucheStatus[key]) personnage.jump();
                 }
 
             }
@@ -240,7 +241,7 @@
             }
 
             var falseKeys = array.every(areFalse);
-            if(falseKeys == true) personnage.stop();
+            if (falseKeys == true) personnage.stop();
 
         }
     };
@@ -252,34 +253,59 @@
         pageY: 0
     };
 
-    var deplacementActions = function() {
+    var deplacementActions = function () {
 
-        if (mouse.offsetX > mouse.lastx) {
-            personnage.run("right");
-        } else {
-            personnage.run("left");
+        if(mouse.offsetX > personnage.CalcPositionLeft) {
+            touches.datas.toucheStatus.left = false;
+            touches.datas.toucheStatus.right = true;
+        } else{
+            touches.datas.toucheStatus.left = true;
+            touches.datas.toucheStatus.right = false;
         }
 
-        if (mouse.offsetY > mouse.lastx) {
-            personnage.run("down");
+        if(mouse.offsetY > personnage.CalcPositionTop){
+            touches.datas.toucheStatus.up = false;
+            touches.datas.toucheStatus.down = true;
         } else {
-            personnage.run("up");
+            touches.datas.toucheStatus.up = true;
+            touches.datas.toucheStatus.down = false;
         }
     };
 
-    document.addEventListener("mousemove", function (e){
+    deplacement = function () {
+        mouse.offsetX = e.offsetX;
+        mouse.offsetY = e.offsetY;
+        deplacementActions();
+    };
 
-        deplacement = function(){
-            mouse.pageX = e.pageX;
-            mouse.pageY = e.pageY;
-            //deplacementActions();
+    deplacementOut = function (){
+
+        touches.datas.toucheStatus = {
+            left: false,
+            right: false,
+            up: false,
+            down: false,
+            jump: false
+        }
+
+    };
+
+    document.addEventListener("mousemove", function (e) {
+
+        deplacement = function () {
+            mouse.offsetX = e.offsetX;
+            mouse.offsetY = e.offsetY;
+            deplacementActions();
         };
+
+        deplacement();
+
+        mouseMoveOut = setTimeout(deplacementOut, 300);
 
         console.log("offset X : " + e.offsetX);
         console.log("offset Y : " + e.offsetY);
-
-        var deplacementTime = setTimeout(deplacement, 1000);
-        clearTimeout(deplacementTime);
+        console.log("personnage top : " + personnage.CalcPositionTop);
+        console.log("personnage left: " + personnage.CalcPositionLeft);
 
     });
 
@@ -289,7 +315,7 @@
         e.preventDefault();
         e.stopPropagation();
 
-        switch (e.keyCode){
+        switch (e.keyCode) {
             case 83:
                 touches.datas.toucheStatus.left = true;
                 break;
@@ -316,7 +342,7 @@
         e.preventDefault();
         e.stopPropagation();
 
-        switch (e.keyCode){
+        switch (e.keyCode) {
             case 83:
                 touches.datas.toucheStatus.left = false;
                 break;
@@ -347,7 +373,7 @@
     var personnage = Object.create(Personnage);
     personnage.init();
 
-    var interactions = function(){
+    var interactions = function () {
         touches.keyActions();
         DOM.listener();
     };
